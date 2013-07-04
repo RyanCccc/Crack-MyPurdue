@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import getpass
 
-from client.BaseClient import Client
+from client.BaseClient import BaseClient
 from client.BaseClient import ClientException
 from decorators import retry
 
 def main():
-    client = Client()
+    client = BaseClient()
     if not client.check_logged_in():
         promp_login(client)
 

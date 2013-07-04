@@ -3,6 +3,7 @@ import time
 import urllib2
 import cookielib
 
+from decorators import retry
 from settings import (
     COOKIE_PATH,
 )
@@ -20,7 +21,9 @@ from network.url import read_url, read_url_and_read
 #from util import save_tmp_file
 
 
-class Client:
+class BaseClient:
+    REG_SESSION_COOKIE_NAME = 'CPSESSID'
+
     def __init__(self, cookie_path=COOKIE_PATH):
         self.cookie_path = cookie_path
         self.cookiejar = cookielib.LWPCookieJar()
@@ -48,21 +51,22 @@ class Client:
         read_url(self, LOGIN_OK)
         content = read_url_and_read(self, LOGIN_NEXT)
         self.save_cookies()
-        welcome_tag = css_select(content,'#welcome')
+        welcome_tag = css_select(content, '#welcome')
         return welcome_tag
 
-    def reg_check(self):
-        read_url(self, REGIS_CHECK_URL)
+    def get_reg_session(self, ret_code):
+        url = REGIS_CHECK_URL + ('?ret_code=%s' % ret_code)
+        read_url(self, url)
         self.save_cookies()
+        return self.reg_check()
+
+    @retry
+    def reg_check(self):
         content = read_url_and_read(self, REGIS_STATUS_CHECK_URL)
         if 'Registration' in content:
             return True
         else:
             raise ClientException('Registration Check Error')
-
-    def regis_status_check(self):
-        resp = self.opener.open(REGIS_STATUS_CHECK_URL, 'term_in=201410')
-        return resp
 
     def save_cookies(self):
         self.cookiejar.save(
@@ -83,8 +87,11 @@ class Client:
         except ClientException as e:
             print e.message
             return False
-        welcome_tag = css_select(content,'#welcome')
+        welcome_tag = css_select(content, '#welcome')
         return welcome_tag
+
+    def get_cookie(self):
+        pass
 
 
 class ClientException(Exception):

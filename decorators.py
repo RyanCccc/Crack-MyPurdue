@@ -1,15 +1,16 @@
+import time
 from decorator import decorator
-
-from client.BaseClient import ClientException
 
 
 @decorator
-def retry(f, *args):
+def retry(f, *args, **kwargs):
     success = False
     while not success:
         try:
-            return f(*args)
+            return f(*args, **kwargs)
             success = True
-        except ClientException as e:
+        except Exception as e:
             print e.message
             success = False
+            print 'Retrying'
+            time.sleep(10)

@@ -2,8 +2,8 @@
 Set-Cookie3: fos.secure.web.server="lpvstulpt01.itap.purdue.edu"; path="/"; domain=".mypurdue.purdue.edu"; path_spec; domain_dot; secure; discard; version=0
 Set-Cookie3: fos.web.server="lpvstulpt01.itap.purdue.edu"; path="/"; domain=".mypurdue.purdue.edu"; path_spec; domain_dot; discard; version=0
 Set-Cookie3: runId=559153210261385625; path="/"; domain=".mypurdue.purdue.edu"; path_spec; domain_dot; discard; version=0
-Set-Cookie3: usid=p5Gk3cmyJDjR2uRt3bFSnw__; path="/"; domain=".mypurdue.purdue.edu"; path_spec; domain_dot; discard; version=0
-Set-Cookie3: usidsec=uiiClLtlc1Pfc2zKtbHcZQ__; path="/"; domain=".mypurdue.purdue.edu"; path_spec; secure; discard; version=0
+Set-Cookie3: usid="o4t1L+t+3R4iIazLLptNog__"; path="/"; domain=".mypurdue.purdue.edu"; path_spec; domain_dot; discard; version=0
+Set-Cookie3: usidsec=Ai7QUmazlORNDCVRVG6jUg__; path="/"; domain=".mypurdue.purdue.edu"; path_spec; secure; discard; version=0
 Set-Cookie3: BIGipServerpool_wl.mypurdue_443="447815340.20480.0000"; path="/"; domain="wl.mypurdue.purdue.edu"; path_spec; discard; version=0
-Set-Cookie3: JSESSIONID_LP4=95D38191F4DABF792E2DC45B7F93D635; path="/"; domain="wl.mypurdue.purdue.edu"; path_spec; discard; version=0
+Set-Cookie3: JSESSIONID_LP4=F90B90E463B01F568B7E872CEAF06617; path="/"; domain="wl.mypurdue.purdue.edu"; path_spec; discard; version=0
 Set-Cookie3: UserAgentId=8291697977245583873; path="/"; domain="wl.mypurdue.purdue.edu"; path_spec; discard; version=0

@@ -11,7 +11,7 @@ LOGIN_NEXT = 'https://wl.mypurdue.purdue.edu/cp/home/next'
 REGIS_CHECK_URL = 'https://wl.mypurdue.purdue.edu/' + \
     'cp/ip/login?sys=sctssb&url=' + \
     'https://selfservice.mypurdue.purdue.edu/' + \
-    'prod/tzwkwbis.P_CheckAgreeAndRedir?ret_code=STU_REGSTAT'
+    'prod/tzwkwbis.P_CheckAgreeAndRedir'
 REGIS_STATUS_CHECK_URL = 'https://selfservice.mypurdue.purdue.edu/' + \
     'prod/bwskrsta.P_RegsStatusDisp'
 MAIN_URL = 'https://wl.mypurdue.purdue.edu/' + \
