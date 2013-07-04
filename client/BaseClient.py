@@ -7,7 +7,7 @@ from decorators import retry
 from settings import (
     COOKIE_PATH,
 )
-from network import (
+from network.urls import (
     HEADERS,
     LOGIN_URL,
     LOGIN_OK,
@@ -17,7 +17,7 @@ from network import (
     MAIN_URL,
 )
 from parser.HTMLparser import css_select
-from network.url import read_url, read_url_and_read
+from network.connection import read_url, read_url_and_read
 #from util import save_tmp_file
 
 
@@ -60,7 +60,7 @@ class BaseClient:
         self.save_cookies()
         return self.reg_check()
 
-    @retry
+    @retry(10)
     def reg_check(self):
         content = read_url_and_read(self, REGIS_STATUS_CHECK_URL)
         if 'Registration' in content:

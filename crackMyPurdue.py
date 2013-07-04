@@ -11,7 +11,7 @@ def main():
         promp_login(client)
 
 
-@retry
+@retry(3)
 def promp_login(client):
     user = raw_input('Your username:')
     pass_ = getpass.getpass('Your password:')
