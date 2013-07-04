@@ -16,7 +16,7 @@ from network.urls import (
     REGIS_STATUS_CHECK_URL,
     MAIN_URL,
 )
-from parser.HTMLparser import css_select
+from parser.web_parser import css_select
 from network.connection import read_url, read_url_and_read
 #from util import save_tmp_file
 
