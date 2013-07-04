@@ -6,6 +6,8 @@ HEADERS = [
     ('User-Agent', 'Mozilla/5.0'),
 ]
 LOGIN_URL = 'https://wl.mypurdue.purdue.edu/cp/home/login'
+LOGIN_OK = 'https://wl.mypurdue.purdue.edu/cps/welcome/loginok.html'
+LOGIN_NEXT = 'https://wl.mypurdue.purdue.edu/cp/home/next'
 REGIS_CHECK_URL = 'https://wl.mypurdue.purdue.edu/' + \
     'cp/ip/login?sys=sctssb&url=' + \
     'https://selfservice.mypurdue.purdue.edu/' + \

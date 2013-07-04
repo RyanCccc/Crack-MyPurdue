@@ -9,12 +9,15 @@ from settings import (
 from network import (
     HEADERS,
     LOGIN_URL,
+    LOGIN_OK,
+    LOGIN_NEXT,
     REGIS_CHECK_URL,
     REGIS_STATUS_CHECK_URL,
     MAIN_URL,
 )
+from parser.HTMLparser import css_select
 from network.url import read_url, read_url_and_read
-from util import save_tmp_file
+#from util import save_tmp_file
 
 
 class Client:
@@ -42,8 +45,11 @@ class Client:
         resp = read_url(self, LOGIN_URL, 'POST', params)
         if resp.code != 200:
             raise ClientException('Login Error')
+        read_url(self, LOGIN_OK)
+        content = read_url_and_read(self, LOGIN_NEXT)
         self.save_cookies()
-        return resp.code == 200
+        welcome_tag = css_select(content,'#welcome')
+        return welcome_tag
 
     def reg_check(self):
         read_url(self, REGIS_CHECK_URL)
@@ -73,11 +79,12 @@ class Client:
 
     def check_logged_in(self):
         try:
-            resp = read_url(self, MAIN_URL)
+            content = read_url_and_read(self, MAIN_URL)
         except ClientException as e:
             print e.message
             return False
-        return resp.code == 200
+        welcome_tag = css_select(content,'#welcome')
+        return welcome_tag
 
 
 class ClientException(Exception):

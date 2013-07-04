@@ -14,8 +14,8 @@ def read_url(client, url, method='GET', data=None):
     return resp
 
 
-def read_url_and_read(client, url, GET=True, data=None):
-    resp = read_url(client, url, GET=True, data=None)
+def read_url_and_read(client, url, method='GET', data=None):
+    resp = read_url(client, url, method, data)
     content = resp.read()
     resp.close()
     return content
