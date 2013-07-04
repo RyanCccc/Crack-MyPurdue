@@ -63,6 +63,7 @@ class BaseClient:
 
     def reg_check(self):
         content = read_url_and_read(self, REGIS_STATUS_CHECK_URL)
+        #TODO change it
         if 'Registration' in content:
             return True
         else:

@@ -1,2 +1,4 @@
 *.pyc
 .mypurdue.cookie
+/tests/tmp/*
+*.swp

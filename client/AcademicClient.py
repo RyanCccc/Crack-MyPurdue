@@ -1,4 +1,5 @@
-from network import (
+from network.connection import read_url, read_url_and_read
+from network.urls import (
     REGIS_STATUS_CHECK_URL,
 )
 from BaseClient import BaseClient
@@ -12,7 +13,8 @@ class RegistrationCheckClient(BaseClient):
 
     def regis_status_check(self):
         self.get_reg_session(self.RET_CODE['regis_status_check'])
-        resp = self.opener.open(REGIS_STATUS_CHECK_URL, 'term_in=201410')
+        param = {'term_in': '201410'}
+        resp = read_url(self, REGIS_STATUS_CHECK_URL, 'POST', param)
         return resp
 
     def regis_history_check(self):
