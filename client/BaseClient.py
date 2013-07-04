@@ -54,13 +54,13 @@ class BaseClient:
         welcome_tag = css_select(content, '#welcome')
         return welcome_tag
 
+    @retry(10)
     def get_reg_session(self, ret_code):
         url = REGIS_CHECK_URL + ('?ret_code=%s' % ret_code)
         read_url(self, url)
         self.save_cookies()
         return self.reg_check()
 
-    @retry(10)
     def reg_check(self):
         content = read_url_and_read(self, REGIS_STATUS_CHECK_URL)
         if 'Registration' in content:
