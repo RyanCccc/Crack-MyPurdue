@@ -1,4 +1,5 @@
 import time
+from client.Exceptions import *
 from decorator import decorator
 
 def retry(wait=3):
@@ -9,7 +10,7 @@ def retry(wait=3):
             try:
                 return f(*args, **kwargs)
                 success = True
-            except Exception as e:
+            except LogInException as e:
                 print e.message
                 success = False
                 print 'Retrying'

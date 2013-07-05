@@ -2,7 +2,9 @@ from network.connection import read_url, read_url_and_read
 from network.urls import (
     REGIS_STATUS_CHECK_URL,
 )
+from parser.web_parser import parse_regis_status
 from BaseClient import BaseClient
+from client.Exceptions import *
 
 
 # Registration status check
@@ -15,7 +17,12 @@ class RegistrationCheckClient(BaseClient):
         self.get_reg_session(self.RET_CODE['regis_status_check'])
         param = {'term_in': '201410'}
         resp = read_url(self, REGIS_STATUS_CHECK_URL, 'POST', param)
-        return resp
+        content = resp.read()
+        try:
+            result = parse_regis_status(content)
+        except:
+            raise RegisCheckClientException('Regis Status Check Failed')
+        return result
 
     def regis_history_check(self):
         pass

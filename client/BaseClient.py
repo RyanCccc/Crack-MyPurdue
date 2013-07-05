@@ -16,8 +16,10 @@ from network.urls import (
     REGIS_STATUS_CHECK_URL,
     MAIN_URL,
 )
-from parser.web_parser import css_select
+from parser.web_parser import css_select, get_name
 from network.connection import read_url, read_url_and_read
+from tests.util import save_test_file, open_test_html_file
+from Exceptions import *
 #from util import save_tmp_file
 
 
@@ -40,19 +42,21 @@ class BaseClient:
         return uuid
 
     def login(self, user, pass_):
-        if self.check_logged_in():
-            print 'You already logged in'
-            return True
+        welcome_tag = self.check_logged_in()
+        if welcome_tag:
+            # 'You already logged in'
+            return get_name(welcome_tag[0])
         uuid = self._get_uuid()
         params = {'user': user, 'pass': pass_, 'uuid': uuid}
         resp = read_url(self, LOGIN_URL, 'POST', params)
-        if resp.code != 200:
-            raise ClientException('Login Error')
+        content = resp.read()
+        if not LOGIN_NEXT in content:
+            raise LogInException('Login Error')
         read_url(self, LOGIN_OK)
         content = read_url_and_read(self, LOGIN_NEXT)
         self.save_cookies()
         welcome_tag = css_select(content, '#welcome')
-        return welcome_tag
+        return get_name(welcome_tag[0])
 
     @retry(10)
     def get_reg_session(self, ret_code):
@@ -67,7 +71,7 @@ class BaseClient:
         if 'Registration' in content:
             return True
         else:
-            raise ClientException('Registration Check Error')
+            raise RegisCheckClientException('Registration Check Error')
 
     def save_cookies(self):
         self.cookiejar.save(
@@ -89,11 +93,10 @@ class BaseClient:
             print e.message
             return False
         welcome_tag = css_select(content, '#welcome')
-        return welcome_tag
+        if welcome_tag:
+            return get_name(welcome_tag[0])
+        else:
+            return False
 
     def get_cookie(self):
         pass
-
-
-class ClientException(Exception):
-    pass
