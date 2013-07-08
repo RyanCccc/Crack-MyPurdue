@@ -7,7 +7,6 @@ from BaseClient import BaseClient
 from client.Exceptions import *
 
 
-# Registration status check
 class RegistrationCheckClient(BaseClient):
     RET_CODE = {
         'regis_status_check': 'STU_REGSTAT',
