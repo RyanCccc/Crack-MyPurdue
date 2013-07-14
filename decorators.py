@@ -15,4 +15,9 @@ def retry(wait=3):
                 success = False
                 print 'Retrying'
                 time.sleep(wait)
+            except RegisCheckClientException as e:
+                print e.message
+                success = False
+                print 'Registration check failed'
+                print 'Try to login again'
     return with_retry

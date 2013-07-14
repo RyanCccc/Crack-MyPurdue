@@ -16,3 +16,4 @@ REGIS_STATUS_CHECK_URL = 'https://selfservice.mypurdue.purdue.edu/' + \
     'prod/bwskrsta.P_RegsStatusDisp'
 MAIN_URL = 'https://wl.mypurdue.purdue.edu/' + \
     'render.userLayoutRootNode.uP?uP_root=root'
+LOGOUT_URL = 'https://wl.mypurdue.purdue.edu/cp/home/logout?uP_tparam=frm&frm='

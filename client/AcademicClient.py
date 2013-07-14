@@ -7,15 +7,18 @@ from BaseClient import BaseClient
 from client.Exceptions import *
 
 
-class RegistrationCheckClient(BaseClient):
+class RegistrationCheckClient:
     RET_CODE = {
         'regis_status_check': 'STU_REGSTAT',
     }
 
+    def __init__(self, client):
+        self.client = client
+
     def regis_status_check(self):
-        self.get_reg_session(self.RET_CODE['regis_status_check'])
+        self.client.get_reg_session(self.RET_CODE['regis_status_check'])
         param = {'term_in': '201410'}
-        resp = read_url(self, REGIS_STATUS_CHECK_URL, 'POST', param)
+        resp = read_url(self.client, REGIS_STATUS_CHECK_URL, 'POST', param)
         content = resp.read()
         try:
             result = parse_regis_status(content)
@@ -41,17 +44,17 @@ class RegistrationCheckClient(BaseClient):
 
 
 # Add and drop class
-class ClassControlClient(BaseClient):
+class ClassControlClient:
     pass
 
 
-class ClassSearchClient(BaseClient):
+class ClassSearchClient:
     pass
 
 
-class ScheduleClient(BaseClient):
+class ScheduleClient:
     pass
 
 
-class GradeClient(BaseClient):
+class GradeClient:
     pass

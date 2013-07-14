@@ -2,6 +2,7 @@ import os
 import time
 import urllib2
 import cookielib
+import getpass
 
 from decorators import retry
 from settings import (
@@ -15,6 +16,7 @@ from network.urls import (
     REGIS_CHECK_URL,
     REGIS_STATUS_CHECK_URL,
     MAIN_URL,
+    LOGOUT_URL,
 )
 from parser.web_parser import css_select, get_name
 from network.connection import read_url, read_url_and_read
@@ -29,8 +31,8 @@ class BaseClient:
     def __init__(self, cookie_path=COOKIE_PATH):
         self.cookie_path = cookie_path
         self.cookiejar = cookielib.LWPCookieJar()
-        if os.path.exists(self.cookie_path):
-            self.load_cookies()
+        #if os.path.exists(self.cookie_path):
+            #self.load_cookies()
         self.opener = urllib2.build_opener(
             urllib2.HTTPCookieProcessor(self.cookiejar)
         )
@@ -41,11 +43,17 @@ class BaseClient:
         uuid = repr(curr_time).replace('.', '')[:13]
         return uuid
 
+    @retry(3)
+    def _promp_login(self):
+        user = raw_input('Your username:')
+        pass_ = getpass.getpass('Your password:')
+        name = self.login(user, pass_)
+        if not name:
+            raise ClientException('Login failed')
+        else:
+            return True
+
     def login(self, user, pass_):
-        welcome_tag = self.check_logged_in()
-        if welcome_tag:
-            # 'You already logged in'
-            return get_name(welcome_tag[0])
         uuid = self._get_uuid()
         params = {'user': user, 'pass': pass_, 'uuid': uuid}
         resp = read_url(self, LOGIN_URL, 'POST', params)
@@ -54,16 +62,21 @@ class BaseClient:
             raise LogInException('Login Error')
         read_url(self, LOGIN_OK)
         content = read_url_and_read(self, LOGIN_NEXT)
-        self.save_cookies()
+        #self.save_cookies()
         welcome_tag = css_select(content, '#welcome')
         return get_name(welcome_tag[0])
 
-    @retry(10)
+    def logout(self):
+        return read_url(self, LOGOUT_URL)
+
     def get_reg_session(self, ret_code):
         url = REGIS_CHECK_URL + ('?ret_code=%s' % ret_code)
         read_url(self, url)
-        self.save_cookies()
-        return self.reg_check()
+        #self.save_cookies()
+        while not self.reg_check():
+            r = self.logout()
+            self.__init__()
+            self._promp_login()
 
     def reg_check(self):
         content = read_url_and_read(self, REGIS_STATUS_CHECK_URL)
@@ -71,8 +84,8 @@ class BaseClient:
         if 'Registration' in content:
             return True
         else:
-            raise RegisCheckClientException('Registration Check Error')
-
+            return False
+    
     def save_cookies(self):
         self.cookiejar.save(
             self.cookie_path,
